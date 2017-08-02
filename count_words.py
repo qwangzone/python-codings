@@ -11,30 +11,24 @@ class CountWords:
         with open(self.filename, 'r') as f:
             content = f.read()
             ls = content.split()
-            #ls = ['some', 'that', 'some', 'wq', 'sjsaj', 'smsma', 'wangqi,']
-            print (ls)
-            for i in range(0,len(ls)):
-                #print(ls[i])
-                #print (content.split()[i])
-                ls[i]=ls[i].strip(",")
-            print (ls)
+
+            #print (ls)
+            for i in range(0, len(ls)):
+                #去除单词中的逗号，点以及空格
+                ls[i] = ls[i].strip(",")
+                ls[i] = ls[i].strip(".")
+                ls[i] = ls[i].strip(" ")
+            #print (ls)
             for i in ls:
-                #print (i)
-                if self.word.lower() == i:
+                if self.word.lower() == i.lower():
                     self.times = self.times+1
             #print (self.ls)
             return self.times
-"""
-    def count_times(self):
-        for i in self.ls:
-            if self.word == i:
-                self.times += 1
-        return self.times
-"""
+
 if __name__ == '__main__':
-    #filename = sys.argv[1]
-    #word = sys.argv[2]
+    filename = sys.argv[1]
+    word = sys.argv[2]
     #print (filename)
-    #print (word)
-    #print (type(CountWords(filename).open_file()))
-    print (CountWords("test.txt","wangqi").open_file())
+    print (word)
+    print (CountWords(filename,word).open_file())
+
