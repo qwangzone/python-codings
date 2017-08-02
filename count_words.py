@@ -22,6 +22,7 @@ class CountWords:
             for i in ls:
                 if self.word.lower() == i.lower():
                     self.times = self.times+1
+
             #print (self.ls)
             return self.times
 
