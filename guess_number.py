@@ -28,6 +28,7 @@ while True:
                 print("输入不合法，请重新输入：")
         if times > 5:
             sys.exit("times out")
+
         if user_number > target:
             print ("Your guess is too high")
             times = times + 1
