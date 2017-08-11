@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!-- Required meta tags -->
+    <title>bug管理系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+        .create-form {
+            margin:1em auto;
+            }
+        .btn-primary {
+
+            margin-left:40px
+            }
+        .td{
+            width: 150px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            }
+    </style>
+    <script src="http://cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
+</head>
+<body>
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-success">{{message}}</div>
+    {% endfor %}
+    {% block body %}{% endblock %}
+
+</div>
+
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+
+
+</body>
+</html>

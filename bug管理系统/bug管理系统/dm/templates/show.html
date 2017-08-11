@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+<h3>标题：{{defect.title}}</h3>
+<p>提出人：{{defect.author}}</p>
+<p><span class="badge badge-{{defect.tag_type}}">bug种类：{{defect.tag_name}}</span></p>
+<div class="defect-detail" id="defect-detail">
+    {{"%n%".join(defect.content.split("\n"))}}
+</div>
+<script type="text/javascript">
+    var text = document.getElementById('defect-detail').innerText.split("%n%").join("\n");
+    console.log(text);
+    document.getElementById('defect-detail').innerHTML =
+      marked(text,{sanitize: true});
+</script>
+{% endblock %}
+
