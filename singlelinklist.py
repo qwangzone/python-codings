@@ -26,7 +26,15 @@ class SingleLinkedList:
         self._head = None
         self._size = 0
     def __str__(self):
-        return "%s,%s" % (self._head,self._size)
+        return "%s" % (self._head)
+
+    def size(self):
+        current = self._head
+        count = 0
+        while current != None:
+            count+=1
+            current = current.getNext()
+        return count
 
     def isEmpty(self):
         return self._head == None
@@ -34,8 +42,8 @@ class SingleLinkedList:
     #在链表前端添加元素
     def addfirst(self, item):
         newitem = Node(item)
-
         newitem.setNext(self._head)
+
         self._head = newitem
         # print(self._head)
         # print(self._head.getNext())
@@ -85,6 +93,7 @@ class SingleLinkedList:
     #删除链表中某个元素
     def delete(self, item):
         tmp = self._head
+        print(tmp.getItem())
         pre = None
         while tmp != None:
             if tmp.getItem() == item:
@@ -97,15 +106,46 @@ class SingleLinkedList:
                 pre = tmp
                 tmp = tmp.getNext()
 
+    #insert链表中插入元素
+    def insert(self, pos, item):
+        if pos <= 1:
+            self.addfirst(item)
+        elif pos > self.size():
+            self.addlast(item)
+        else:
+            tmp = Node(item)
+            count = 1
+            pre = None
+            current = self._head
+            while count < pos:
+                count+=1
+                pre = current
+                current = current.getNext()
+            pre.setNext(tmp)
+            tmp.setNext(current)
+    #反转链表
+    # def reverse(self):
+    #     cur = self._head
+    #     pre = None
+    #     h = None
+    #     while cur :
+    #         h = cur.setNext(pre)
+    #         pre = cur
+    #         cur = cur.getNext()
+    #
+    #     return h
+
 
 if __name__ == '__main__':
     wq = SingleLinkedList()
     wq.addfirst(1)
     wq.addfirst(2)
     wq.addfirst(9)
-    wq.addlast(9)
-    #wq.delete(9)
-    print(wq.index(1))
+    #wq.addlast(9)
+    #wq.delete(2)
+    wq.insert(2, 12)
+    wq.reverse()
+    #print(wq.index(1))
     print(wq)
 
 
