@@ -5,5 +5,5 @@ def move(n, a='起点A', b='缓冲区B', c='目的地C'):
     else:
         move(n-1, a, c, b)
         move(1, a, b, c)
-        move(n-1,b,a,c)
+        move(n-1, b, a, c)
 move(int(input('这个鬼东西有多少层？')))
