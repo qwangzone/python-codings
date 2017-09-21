@@ -272,25 +272,26 @@
 # #     p.join()
 # #     print("child process end")
 #
-# #启动大量子进程用pool
-# # from multiprocessing import Pool
-# # import os, time, random
-# # def long_time_task(name):
-# #     print("Run task %s (%s)..." % (name, os.getpid()))
-# #     start = time.time()
-# #     time.sleep(random.random()*3)
-# #
-# #     end = time.time()
-# #     print('Task %s run %0.2f seconds' % (name, (end - start)))
-# #
-# # print("Parent process %s." % os.getpid())
-# # p = Pool(4)
-# # for i in range(5):
-# #     p.apply_async(long_time_task, args=(i,))
-# # print("Waiting for all subprocess done...")
-# # p.close()
-# # p.join()
-# # print("All subprocess done..")
+#启动大量子进程用pool
+# from multiprocessing import Pool
+# import os, time, random
+# def long_time_task(name):
+#     print("Run task %s (%s)..." % (name, os.getpid()))
+#     start = time.time()
+#     time.sleep(random.random()*3)
+#
+#     end = time.time()
+#     print('Task %s run %0.2f seconds' % (name, (end - start)))
+# if __name__ == '__main__':
+#
+#     print("Parent process %s." % os.getpid())
+#     p = Pool()
+#     for i in range(5):
+#         p.apply_async(long_time_task, args=(i,))
+#     print("Waiting for all subprocess done...")
+#     p.close()
+#     p.join()
+#     print("All subprocess done..")
 # #多线程
 # #import time,threading
 # #线程执行的代码
@@ -413,3 +414,35 @@
 """分布式进程"""
 import random, time, queue
 from multiprocessing.managers import BaseManager
+#发送任务的队列
+task_queue = queue.Queue()
+#接收任务的队列
+result_queue = queue.Queue()
+
+#从BaseManager继承的QueueManager
+class QueueManager(BaseManager):
+    pass
+#把两个Queue注册到网络上
+QueueManager.register('get_task_queue', callable=lambda: task_queue)
+QueueManager.register('get_result_task', callable=lambda: result_queue)
+#绑定端口5000，设置验证码‘abc‘
+manager = QueueManager(address=('', 5000), authkey=b'abc')
+#启动queue
+manager.start()
+#获取通过网络访问的Queue对象
+task = manager.get_task_queue()
+result = manager.get_result_task()
+#放几个任务进去
+for i in range(10):
+    n = random.randint(0, 1000)
+    print('Put task %d' % n)
+    task.put(n)
+
+#从result队列获取结果
+print('Try get results..')
+for i in range(10):
+    r = result.get(timeout=10)
+    print('Result: %s' % r)
+#关闭
+manager.shutdown()
+print('master exit.')
