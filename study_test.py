@@ -411,38 +411,77 @@
 #     #pr是死循环，无法等待其结束，只能强制结束
 #     pr.terminate()
 
-"""分布式进程"""
-import random, time, queue
-from multiprocessing.managers import BaseManager
-#发送任务的队列
-task_queue = queue.Queue()
-#接收任务的队列
-result_queue = queue.Queue()
+# """分布式进程"""
+# import random, time, queue
+# from multiprocessing.managers import BaseManager
+# #发送任务的队列
+# task_queue = queue.Queue()
+# #接收任务的队列
+# result_queue = queue.Queue()
+#
+# #从BaseManager继承的QueueManager
+# class QueueManager(BaseManager):
+#     pass
+# #把两个Queue注册到网络上
+# QueueManager.register('get_task_queue', callable=lambda: task_queue)
+# QueueManager.register('get_result_task', callable=lambda: result_queue)
+# #绑定端口5000，设置验证码‘abc‘
+# manager = QueueManager(address=('', 5000), authkey=b'abc')
+# #启动queue
+# manager.start()
+# #获取通过网络访问的Queue对象
+# task = manager.get_task_queue()
+# result = manager.get_result_task()
+# #放几个任务进去
+# for i in range(10):
+#     n = random.randint(0, 1000)
+#     print('Put task %d' % n)
+#     task.put(n)
+#
+# #从result队列获取结果
+# print('Try get results..')
+# for i in range(10):
+#     r = result.get(timeout=10)
+#     print('Result: %s' % r)
+# #关闭
+# manager.shutdown()
+# print('master exit.')
 
-#从BaseManager继承的QueueManager
-class QueueManager(BaseManager):
-    pass
-#把两个Queue注册到网络上
-QueueManager.register('get_task_queue', callable=lambda: task_queue)
-QueueManager.register('get_result_task', callable=lambda: result_queue)
-#绑定端口5000，设置验证码‘abc‘
-manager = QueueManager(address=('', 5000), authkey=b'abc')
-#启动queue
-manager.start()
-#获取通过网络访问的Queue对象
-task = manager.get_task_queue()
-result = manager.get_result_task()
-#放几个任务进去
-for i in range(10):
-    n = random.randint(0, 1000)
-    print('Put task %d' % n)
-    task.put(n)
+# import re
+# t = input("请输入一个网址:")
+# s = re.compile(r'[0-9a-zA-Z]+[.][0-9a-zA-Z]+[.][0-9a-zA-Z]+')
+# if s.match(t):
+#     print("pass")
+# else:
+#     print("请重新输入")
 
-#从result队列获取结果
-print('Try get results..')
-for i in range(10):
-    r = result.get(timeout=10)
-    print('Result: %s' % r)
-#关闭
-manager.shutdown()
-print('master exit.')
+"""上下文优化"""
+from contextlib import contextmanager
+class Query:
+    def __init__(self, name):
+        self.name = name
+
+    def __enter__(self):
+        print('Enter')
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        print('End')
+
+    def query(self):
+        print('Query info about %s...' % self.name)
+#
+# if __name__ == '__main__':
+#     with Query('Bon') as q:
+#         q.query()
+
+@contextmanager
+def creat_query(name):
+    print('Begin')
+    q = Query(name)
+    yield q
+    print('End')
+
+with creat_query('Bob') as q1:
+    q1.query()
+
+
