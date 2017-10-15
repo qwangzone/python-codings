@@ -454,34 +454,70 @@
 #     print("pass")
 # else:
 #     print("请重新输入")
-
-"""上下文优化"""
-from contextlib import contextmanager
-class Query:
-    def __init__(self, name):
-        self.name = name
-
-    def __enter__(self):
-        print('Enter')
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        print('End')
-
-    def query(self):
-        print('Query info about %s...' % self.name)
 #
-# if __name__ == '__main__':
-#     with Query('Bon') as q:
-#         q.query()
+# """上下文优化"""
+# from contextlib import contextmanager
+#
+# class Query(object):
+#
+#     def __init__(self):
+#         self.name = 'wangqi'
+#         print('this is __init__')
+#
+#     def __enter__(self):
+#         print('Enter')
+#         return self
+#
+#     def query(self):
+#         print('Query info about %s...' % self.name)
+#
+#     def __exit__(self, exc_type, exc_value, traceback):
+#         print('End')
+# with Query() as wq:
+#     wq.query()
 
-@contextmanager
-def creat_query(name):
-    print('Begin')
-    q = Query(name)
-    yield q
-    print('End')
+# @contextmanager
+# def creat_query(name):
+#     print('Begin')
+#     q = Query(name)
+#     yield q
+#     print('End')
+#
+# with creat_query('Bob') as q1:
+#     q1.query()
 
-with creat_query('Bob') as q1:
-    q1.query()
+"""解析xml"""
+from xml.parsers.expat import ParserCreate
+
+class DefaultSaxHandler(object):
+
+    def start_element(self, name, attrs):
+        print('start_element:%s, attrs:%s' %(name, str(attrs)))
+
+    def end_element(self, name):
+        print('end_element:%s' % name)
+
+    def char_data(self, text):
+        a = []
+        a.append(text)
+        #print('char_data:%s' % text)
+        return a
+xml = r'''<?xml version="1.0"?>
+<ol>
+    <li><a href="/python">Python</a></li>
+    <li><a href="/ruby">Ruby</a></li>
+    <li><a href="/java">Java</a></li>
+</ol>
+'''
+handler = DefaultSaxHandler()
+parser = ParserCreate()
+parser.StartElementHandler = handler.start_element
+parser.EndElementHandler = handler.end_element
+parser.CharacterDataHandler = handler.char_data
+parser.Parse(xml)
+
+
+print('==============')
+print(handler)
 
 
