@@ -72,12 +72,13 @@
 #
 # #用sorted对二维列表排序
 #
-# # L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88), ('Eale', 100)]
-# # def by_name(t):
-# #     for n in t:
-# #         return n[2]
-# # L2 = sorted(L, key=by_name)
-# # print(L2)
+# L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88), ('Eale', 100)]
+# def by_name(t):
+#     return t[1]
+# L2 = sorted(L, key=by_name)
+# L3 = sorted(L, key=lambda x : x[1])
+# print(L2)
+# print(L3)
 # # (a))x = [a for a in range(1, 101, 2)]
 # # print(x)
 # # def bulid(x, y):
@@ -486,38 +487,40 @@
 # with creat_query('Bob') as q1:
 #     q1.query()
 
-"""解析xml"""
-from xml.parsers.expat import ParserCreate
+# """解析xml"""
+# from xml.parsers.expat import ParserCreate
+#
+# class DefaultSaxHandler(object):
+#
+#     def start_element(self, name, attrs):
+#         print('start_element:%s, attrs:%s' %(name, str(attrs)))
+#
+#     def end_element(self, name):
+#         print('end_element:%s' % name)
+#
+#     def char_data(self, text):
+#         a = []
+#         a.append(text)
+#         #print('char_data:%s' % text)
+#         return a
+# xml = r'''<?xml version="1.0"?>
+# <ol>
+#     <li><a href="/python">Python</a></li>
+#     <li><a href="/ruby">Ruby</a></li>
+#     <li><a href="/java">Java</a></li>
+# </ol>
+# '''
+# handler = DefaultSaxHandler()
+# parser = ParserCreate()
+# parser.StartElementHandler = handler.start_element
+# parser.EndElementHandler = handler.end_element
+# parser.CharacterDataHandler = handler.char_data
+# parser.Parse(xml)
+#
+#
+# print('==============')
+# print(handler)
 
-class DefaultSaxHandler(object):
 
-    def start_element(self, name, attrs):
-        print('start_element:%s, attrs:%s' %(name, str(attrs)))
-
-    def end_element(self, name):
-        print('end_element:%s' % name)
-
-    def char_data(self, text):
-        a = []
-        a.append(text)
-        #print('char_data:%s' % text)
-        return a
-xml = r'''<?xml version="1.0"?>
-<ol>
-    <li><a href="/python">Python</a></li>
-    <li><a href="/ruby">Ruby</a></li>
-    <li><a href="/java">Java</a></li>
-</ol>
-'''
-handler = DefaultSaxHandler()
-parser = ParserCreate()
-parser.StartElementHandler = handler.start_element
-parser.EndElementHandler = handler.end_element
-parser.CharacterDataHandler = handler.char_data
-parser.Parse(xml)
-
-
-print('==============')
-print(handler)
 
 
