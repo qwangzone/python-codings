@@ -12,8 +12,9 @@ background
 downstream
 six-year-old
 '''
-def is_isogram_old(word):
+def is_isogram(word):
     dic1 = {}
+    lis = []
     for i in word.lower():
         if i == ' ':
             continue
@@ -27,9 +28,16 @@ def is_isogram_old(word):
     for key, value in dic1.items():
         #print(key, value)
         if value > 1:
-            yield False
+            #yield False
+            lis.append(False)
         else:
-            yield True
+            #yield True
+            lis.append(True)
+    if False in lis:
+        return False
+    else:
+        return True
+'''
 def is_isogram(word):
     lis = []
     for a in is_isogram_old(word):
@@ -38,7 +46,7 @@ def is_isogram(word):
         return False
     else:
         return True
-
+'''
 import unittest
 
 
